@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  
+	<!-- 核心配置：统一输出到.artifact目录 -->
+    <!-- .artifact目录在解决方案根目录下（推荐） -->
+    <BaseOutputPath>$(SolutionDir).artifact\$(MSBuildProjectName)\</BaseOutputPath>
+    <!-- bin目录路径 -->
+    <OutputPath>$(BaseOutputPath)$(Configuration)\$(Platform)\</OutputPath>
+    <!-- obj目录和bin目录同层级（放在bin目录下的obj子文件夹） -->
+    <IntermediateOutputPath>$(OutputPath)obj\</IntermediateOutputPath>
+
+    <!-- 可选：清理时自动删除.artifact下的对应目录 -->
+    <CleanOutputFolder>true</CleanOutputFolder>
+	
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Assets\Ico\" />
+    <Folder Include="View\" />
+    <Folder Include="ViewModel\" />
+    <Folder Include="Core\" />
+    <Resource Include="Assets\Ico\play_market_icon.ico" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,30 @@
+# 忽略.artifact目录及其所有内容
+VideoManager/.artifact/
+VideoManager/.vs/
+# 忽略常见的构建输出目录
+bin/
+obj/
+out/
+build/
+
+# 忽略Visual Studio生成的文件
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# 忽略.NET生成的文件
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# 忽略临时文件
+*.tmp
+*.temp
+*.cache
