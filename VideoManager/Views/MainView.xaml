@@ -1,0 +1,245 @@
+﻿<Window x:Class="VideoManager.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VideoManager.Views"
+        xmlns:sp="clr-namespace:VideoManager.Views.SubPages"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        mc:Ignorable="d"
+        Title="VideoManager" Height="650" Width="1000"
+        Icon="pack://application:,,,/Assets/Ico/play_market_icon.ico">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome NonClientFrameEdges="None" UseAeroCaptionButtons="False" />
+    </WindowChrome.WindowChrome>
+
+    <Window.Background>
+        <RadialGradientBrush GradientOrigin="0.5, 0.3" Center="0.5, 0.3" RadiusX="0.7" RadiusY="0.7">
+            <GradientStop Color="#FFF" Offset="0.0" />
+            <GradientStop Color="#EBF1FF" Offset="1.0" />
+        </RadialGradientBrush>
+    </Window.Background>
+
+        <Window.Resources>
+        
+        <sp:AboutView x:Key="av"/>
+        <sp:SettingsView x:Key="sv"/>
+        <sp:HomePageView x:Key="hv"/>
+        <sp:ManagerView x:Key="mv"/>
+
+        <Style TargetType="Button" x:Key="CloseButtonStyle">
+            <Setter Property="FontFamily" Value="{StaticResource Jinbuti}"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Foreground" Value="#5979FD"/>
+            <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="Transparent"
+                                CornerRadius="5"
+                                BorderBrush="#5979FD"
+                                BorderThickness="1"
+                                Name="border">
+                            <ContentPresenter VerticalAlignment="Center"
+                                              HorizontalAlignment="Center"
+                                              Margin="10,4"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#115979FD"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#225979FD"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="RadioButton" x:Key="NavButtonStyle">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontFamily" Value="{StaticResource Jinbuti}"/>
+            <Setter Property="Foreground" Value="#888"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border Background="Transparent" Name="border">
+                            <StackPanel Orientation="Horizontal"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center">
+                                <TextBlock Text="{TemplateBinding Tag}"
+                                           FontFamily="{StaticResource Iconfont}"
+                                           VerticalAlignment="Center"
+                                           FontSize="16"
+                                           Margin="0,0,4,0"/>
+                                <ContentPresenter VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  Margin="4,0,0,0"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background">
+                                    <Setter.Value>
+                                        <RadialGradientBrush GradientOrigin="0.5,1" Center="0.5,1" RadiusX="0.6" RadiusY="1">
+                                            <GradientStop Color="#555979FD" Offset="0.2"/>
+                                            <GradientStop Color="Transparent" Offset="1"/>
+                                        </RadialGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="border" Property="Background">
+                                    <Setter.Value>
+                                        <RadialGradientBrush GradientOrigin="0.5,1" Center="0.5,1" RadiusX="0.6" RadiusY="1">
+                                            <GradientStop Color="#555979FD" Offset="0.2"/>
+                                            <GradientStop Color="Transparent" Offset="1"/>
+                                        </RadialGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Foreground" Value="#5979FD"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0" Background="#00FFFFFF">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="46"/>
+                <ColumnDefinition Width="46"/>
+                <ColumnDefinition Width="46"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Column="0"
+                   Width="16"
+                   Height="16"
+                   Margin="12,0,8,0"
+                   VerticalAlignment="Center"
+                   Source="pack://application:,,,/Assets/Ico/play_market_icon.ico"
+                   shell:WindowChrome.IsHitTestVisibleInChrome="True"/>
+
+            <TextBlock Grid.Column="1" 
+                       Text="VideoManager" 
+                       FontFamily="{StaticResource Jinbuti}" 
+                       FontSize="12" 
+                       VerticalAlignment="Center" 
+                       Margin="5,0,0,0"
+                       shell:WindowChrome.IsHitTestVisibleInChrome="True"/>
+
+            <!-- 最小化按钮 -->
+            <Button Grid.Column="2" 
+                    Background="Transparent"
+                    Width="46"
+                    Height="32"
+                    BorderThickness="0"
+                    Click="Minimize_Click"
+                    shell:WindowChrome.IsHitTestVisibleInChrome="True">
+                <Path Data="M0,0 L10,0 L10,1 L0,1 Z" 
+                      Fill="Black" 
+                      HorizontalAlignment="Center" 
+                      VerticalAlignment="Center"
+                      Stretch="Uniform"
+                      Width="10"
+                      Height="1"/>
+            </Button>
+
+            <!-- 最大化/还原按钮 -->
+            <Button Grid.Column="3" 
+                    Background="Transparent"
+                    Width="46"
+                    Height="32"
+                    BorderThickness="0"
+                    Click="Maximize_Click"
+                    shell:WindowChrome.IsHitTestVisibleInChrome="True">
+                <Path x:Name="MaximizePath" 
+                      Data="M0,0 L10,0 L10,10 L0,10 Z" 
+                      Stroke="Black" 
+                    StrokeThickness="1"
+                Fill="Transparent"
+                      HorizontalAlignment="Center" 
+                      VerticalAlignment="Center"
+                      Stretch="Uniform"
+                      Width="10"
+                      Height="10"/>
+            </Button>
+
+            <!-- 关闭按钮 -->
+            <Button Grid.Column="4" 
+                    Background="Transparent"
+                    Width="46"
+                    Height="32"
+                    BorderThickness="0"
+                    Click="Close_Click"
+                    shell:WindowChrome.IsHitTestVisibleInChrome="True">
+                <Path Data="M0,0 L10,10 M10,0 L0,10" 
+                      Stroke="Black" 
+                      StrokeThickness="1"
+                      HorizontalAlignment="Center" 
+                      VerticalAlignment="Center"
+                      Stretch="Uniform"
+                      Width="10"
+                      Height="10"/>
+            </Button>
+        </Grid>
+
+              <Border
+            Width="750"
+            CornerRadius="20,20,0,0"
+            Background="#DFFF"
+            Grid.Row="2"
+            >
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="0" BlurRadius="10" Color="#5979FD" Opacity="0.3"/>
+            </Border.Effect>
+
+            <UniformGrid Rows="1" HorizontalAlignment="Center">
+                <RadioButton Content="首页"
+                             Tag="&#xe807;"
+                             Command="{Binding NavCommand}"
+                             Style="{StaticResource NavButtonStyle}"
+                             CommandParameter="{StaticResource hv}">
+                    
+                </RadioButton>
+                <RadioButton Content="编辑"
+                             Tag="&#xe6c8;"
+                             Command="{Binding NavCommand}"
+                    Style="{StaticResource NavButtonStyle}"
+                             CommandParameter="{StaticResource mv}">
+
+                </RadioButton>
+                <RadioButton Content="设置"
+                             Tag="&#xe625;"
+                             Command="{Binding NavCommand}"
+                             Style="{StaticResource NavButtonStyle}"
+                             CommandParameter="{StaticResource sv}">
+
+                </RadioButton>
+                <RadioButton Content="关于"
+                             Tag="&#xe612;"
+                             Command="{Binding NavCommand}"
+                    Style="{StaticResource NavButtonStyle}"
+                             CommandParameter="{StaticResource av}">
+                </RadioButton>
+            </UniformGrid>
+        </Border>
+
+        <ContentControl Grid.Row="1" Content="{Binding PageContent, TargetNullValue={ StaticResource hv}}"/>
+
+
+    </Grid>
+</Window>

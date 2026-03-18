@@ -21,10 +21,28 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Assets\Ico\" />
-    <Folder Include="View\" />
-    <Folder Include="ViewModel\" />
+    <Compile Remove="ViewModel\**" />
+    <Compile Remove="View\**" />
+    <EmbeddedResource Remove="ViewModel\**" />
+    <EmbeddedResource Remove="View\**" />
+    <None Remove="ViewModel\**" />
+    <None Remove="View\**" />
+    <Page Remove="ViewModel\**" />
+    <Page Remove="View\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\Fonts\digital_display.ttf" />
+    <None Remove="Assets\Fonts\DingTalk-JinBuTi.ttf" />
+    <None Remove="Assets\Fonts\iconfont.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Core\" />
+    <PackageReference Include="Prism.Core" Version="9.0.537" />
+    <Resource Include="Assets\Fonts\digital_display.ttf" />
+    <Resource Include="Assets\Fonts\DingTalk-JinBuTi.ttf" />
+    <Resource Include="Assets\Fonts\iconfont.ttf" />
     <Resource Include="Assets\Ico\play_market_icon.ico" />
   </ItemGroup>
 
