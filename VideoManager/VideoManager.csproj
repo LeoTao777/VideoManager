@@ -6,7 +6,6 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-  
 	<!-- 核心配置：统一输出到.artifact目录 -->
     <!-- .artifact目录在解决方案根目录下（推荐） -->
     <BaseOutputPath>$(SolutionDir).artifact\$(MSBuildProjectName)\</BaseOutputPath>
@@ -39,6 +38,7 @@
 
   <ItemGroup>
     <Folder Include="Core\" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Prism.Core" Version="9.0.537" />
     <Resource Include="Assets\Fonts\digital_display.ttf" />
     <Resource Include="Assets\Fonts\DingTalk-JinBuTi.ttf" />

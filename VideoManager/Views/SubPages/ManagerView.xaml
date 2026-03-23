@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="VideoManager.Views.SubPages.ManagerView"
+<UserControl x:Class="VideoManager.Views.SubPages.ManagerView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,7 +6,131 @@
              xmlns:local="clr-namespace:VideoManager.Views.SubPages"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+    </UserControl.Resources>
     <Grid>
-            <TextBlock Text="ManagerView" FontSize="20"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 顶部工具栏 -->
+        <StackPanel Orientation="Horizontal" Margin="10"
+                    VerticalAlignment="Top"
+                    Grid.Row="0"
+                    Visibility="{Binding ShowVideoList, Converter={StaticResource BoolToVisibility}}">
+            <Button Content="选择文件夹"
+                    Width="100"
+                    Height="30"
+                    Margin="0,0,10,0"
+                    Command="{Binding SelectFolderCommand}"/>
+            <TextBlock Text="{Binding SelectedFolderPath}" 
+                       VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- 播放器（填充整个窗口） -->
+        <MediaElement x:Name="VideoPlayer"
+                       Grid.Row="1"
+                       LoadedBehavior="Manual"
+                       UnloadedBehavior="Stop"
+                       Stretch="UniformToFill"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch"/>
+
+        <!-- 底部播放控制条 -->
+        <Border Background="#66000000"
+                CornerRadius="4"
+                Margin="10"
+                Height="110"
+                VerticalAlignment="Bottom"
+                Grid.Row="1"
+                Panel.ZIndex="2"
+                Visibility="{Binding ShowControls, Converter={StaticResource BoolToVisibility}}">
+            <Grid Margin="12">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Left">
+                    <Button Content="{Binding PauseButtonText}"
+                            Width="90"
+                            Height="28"
+                            Margin="0,0,10,0"
+                            Command="{Binding TogglePauseCommand}"/>
+                    <Button Content="退出"
+                            Width="90"
+                            Height="28"
+                            Command="{Binding ExitPlaybackCommand}"/>
+                </StackPanel>
+
+                <Grid Grid.Row="1" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ProgressBar Grid.Column="0"
+                                 Height="10"
+                                 Minimum="0"
+                                 Maximum="1"
+                                 Value="{Binding VideoProgress, Mode=OneWay}"
+                                 VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1"
+                               Margin="10,0,10,0"
+                               Foreground="White"
+                               VerticalAlignment="Center"
+                               FontSize="12"
+                               Text="{Binding VideoPosition, StringFormat={}{0:mm\\:ss}}"/>
+                    <TextBlock Grid.Column="2"
+                               Foreground="White"
+                               VerticalAlignment="Center"
+                               FontSize="12"
+                               Text="{Binding VideoDuration, StringFormat={}{0:mm\\:ss}}"/>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!-- 视频列表（未播放时显示） -->
+        <ListView Margin="10"
+                  Grid.Row="1"
+                  VerticalAlignment="Stretch"
+                  SelectionMode="Single"
+                  ItemsSource="{Binding Videos}"
+                  SelectedItem="{Binding SelectedVideo, Mode=TwoWay}"
+                  Panel.ZIndex="1"
+                  Visibility="{Binding ShowVideoList, Converter={StaticResource BoolToVisibility}}"
+                  MouseDoubleClick="VideoList_MouseDoubleClick">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Width="150" Margin="5" HorizontalAlignment="Left">
+                        <Border Width="96"
+                                Height="96"
+                                Background="Transparent"
+                                BorderThickness="1"
+                                BorderBrush="#33000000"
+                                CornerRadius="4">
+                            <Image Source="{Binding Thumbnail}"
+                                   Width="96"
+                                   Height="96"
+                                   Stretch="UniformToFill"/>
+                        </Border>
+                        <TextBlock Text="{Binding Name}"
+                                   Margin="0,6,0,0"
+                                   TextAlignment="Center"
+                                   TextTrimming="CharacterEllipsis"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </UserControl>
