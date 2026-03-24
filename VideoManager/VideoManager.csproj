@@ -6,13 +6,9 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-	<!-- 核心配置：统一输出到.artifact目录 -->
-    <!-- .artifact目录在解决方案根目录下（推荐） -->
-    <BaseOutputPath>$(SolutionDir).artifact\$(MSBuildProjectName)\</BaseOutputPath>
-    <!-- bin目录路径 -->
+    <!-- 核心配置：将最终产物与中间产物分离，避免输出目录看起来重复 -->
+    <BaseOutputPath>$(SolutionDir).artifact\bin\$(MSBuildProjectName)\</BaseOutputPath>
     <OutputPath>$(BaseOutputPath)$(Configuration)\$(Platform)\</OutputPath>
-    <!-- obj目录和bin目录同层级（放在bin目录下的obj子文件夹） -->
-    <IntermediateOutputPath>$(OutputPath)obj\</IntermediateOutputPath>
 
     <!-- 可选：清理时自动删除.artifact下的对应目录 -->
     <CleanOutputFolder>true</CleanOutputFolder>
