@@ -1,0 +1,96 @@
+﻿<Window x:Class="VideoManager.Views.SubPages.SnapshotPreviewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="截图预览"
+        Height="720"
+        Width="1080"
+        MinHeight="420"
+        MinWidth="640"
+        WindowStartupLocation="CenterOwner"
+        Topmost="True"
+        Background="#111111">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0"
+                x:Name="PreviewViewport"
+                Background="#1E1E1E"
+                BorderBrush="#333333"
+                BorderThickness="1"
+                CornerRadius="6"
+                PreviewMouseWheel="PreviewViewport_MouseWheel"
+                MouseLeftButtonDown="PreviewViewport_MouseLeftButtonDown"
+                MouseMove="PreviewViewport_MouseMove"
+                MouseLeftButtonUp="PreviewViewport_MouseLeftButtonUp"
+                MouseLeave="PreviewViewport_MouseLeave">
+            <Grid ClipToBounds="True">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                              VerticalScrollBarVisibility="Disabled"
+                              Focusable="False">
+                    <Grid x:Name="PreviewHost" Background="Transparent">
+                        <Image x:Name="PreviewImage"
+                               Stretch="Uniform"
+                               Margin="8"
+                               Visibility="Collapsed"
+                               RenderTransformOrigin="0,0">
+                            <Image.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform x:Name="ZoomScaleTransform" ScaleX="1" ScaleY="1"/>
+                                    <TranslateTransform x:Name="PanTranslateTransform" X="0" Y="0"/>
+                                </TransformGroup>
+                            </Image.RenderTransform>
+                        </Image>
+                    </Grid>
+                </ScrollViewer>
+                <TextBlock x:Name="PreviewFallbackText"
+                           Text="图片加载失败"
+                           Foreground="#DADADA"
+                           FontSize="16"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Visibility="Collapsed"/>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="0,12,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0"
+                    Width="100"
+                    Height="32"
+                    Margin="0,0,8,0"
+                    Content="前一张"
+                    Click="PreviousButton_Click"/>
+            <Button Grid.Column="1"
+                    Width="100"
+                    Height="32"
+                    Margin="0,0,16,0"
+                    Content="后一张"
+                    Click="NextButton_Click"/>
+
+            <StackPanel Grid.Column="2"
+                        VerticalAlignment="Center">
+                <TextBlock x:Name="CaptureTimeTextBlock"
+                           Foreground="#F2F2F2"
+                           FontWeight="SemiBold"/>
+                <TextBlock x:Name="FileNameTextBlock"
+                           Margin="0,2,0,0"
+                           Foreground="#BDBDBD"/>
+            </StackPanel>
+
+            <Button Grid.Column="3"
+                    Width="100"
+                    Height="32"
+                    Content="关闭"
+                    Click="CloseButton_Click"/>
+        </Grid>
+    </Grid>
+</Window>

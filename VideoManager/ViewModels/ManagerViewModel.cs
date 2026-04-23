@@ -42,7 +42,7 @@ namespace VideoManager.ViewModels
             {
                 if (SetProperty(ref _selectedVideo, value))
                 {
-                    // 浠呯敤浜庨珮浜€夋嫨锛屼笉瑙﹀彂鎾斁
+                    // 仅用于高亮选择，不触发播放
                 }
             }
         }
@@ -76,7 +76,7 @@ namespace VideoManager.ViewModels
             {
                 if (SetProperty(ref _playbackUri, value))
                 {
-                    // PlaybackUri 鍙樺寲鏃讹紝鎾斁鐘舵€佷竴鑸渶瑕佸悓姝ュ埛鏂?
+                    // PlaybackUri 变化时，播放状态一般需要同步刷新
                     if (value == null)
                     {
                         IsPlaying = false;
@@ -204,8 +204,8 @@ namespace VideoManager.ViewModels
 
         private void ExecuteSelectFolder()
         {
-            // 浣跨敤 Win32 鍘熺敓瀵硅瘽妗嗛€夋嫨鏂囦欢澶癸紝閬垮厤渚濊禆 System.Windows.Forms
-            var selectedPath = BrowseForFolder("閫夋嫨鍖呭惈瑙嗛鏂囦欢鐨勬枃浠跺す");
+            // 使用 Win32 原生对话框选择文件夹，避免依赖 System.Windows.Forms
+            var selectedPath = BrowseForFolder("选择包含视频文件的文件夹");
             if (string.IsNullOrWhiteSpace(selectedPath))
             {
                 return;
@@ -287,7 +287,7 @@ namespace VideoManager.ViewModels
         }
         private static string? BrowseForFolder(string description)
         {
-            // 鍏佽鐢ㄦ埛閫夋嫨鈥滅洰褰曗€濓紝骞跺敖閲忎娇鐢ㄦ柊鐨勬牱寮?
+            // 允许用户选择“目录”，并尽量使用新的样式
             const uint BIF_RETURNONLYFSDIRS = 0x0001;
             const uint BIF_NEWDIALOGSTYLE = 0x0040;
 
@@ -308,7 +308,7 @@ namespace VideoManager.ViewModels
 
             var pidl = SHBrowseForFolder(ref bi);
             if (pidl == IntPtr.Zero)
-                return null; // 鐢ㄦ埛鍙栨秷
+                return null; // 用户取消
 
             try
             {
@@ -358,7 +358,7 @@ namespace VideoManager.ViewModels
                     .Where(f => supportedExtensions.Contains(Path.GetExtension(f), StringComparer.OrdinalIgnoreCase))
                     .ToList();
 
-                // 涓洪伩鍏嶇敤鎴峰揩閫熷垏鎹㈢洰褰曟椂鈥滄棫浠诲姟瑕嗙洊鏂颁换鍔♀€濓紝鐢ㄧ増鏈彿鍋氫繚鎶?
+                // 为避免用户快速切换目录时“旧任务覆盖新任务”，用版本号做保护
                 var myVersion = Interlocked.Increment(ref _loadVersion);
                 _thumbnailCts?.Cancel();
                 _thumbnailCts?.Dispose();
@@ -369,14 +369,14 @@ namespace VideoManager.ViewModels
                 if (dispatcher == null)
                     return;
 
-                // 鍏堢粰鍗犱綅鍥撅細鍙栫涓€涓枃浠剁殑 ICONONLY锛屼繚璇佸垪琛ㄤ笉浼氭槸绌虹櫧
+                // 先给占位图：取第一个文件的 ICONONLY，保证列表不会是空白
                 ImageSource? placeholder = null;
                 if (filePaths.Count > 0)
                 {
                     placeholder = ExtractShellImage(filePaths[0], ThumbnailSize, SIIGBF_ICONONLY | SIIGBF_BIGGERSIZEOK);
                 }
 
-                // 鍏堟妸鏉＄洰鏀惧埌闆嗗悎閲岋紙UI 绔嬪埢鍙锛夛紝闅忓悗鍚庡彴閫愪釜鏇挎崲 Thumbnail
+                // 先把条目放到集合里（UI 立刻可见），随后后台逐个替换 Thumbnail
                 var workItems = new System.Collections.Generic.List<(string path, VideoItem item)>(filePaths.Count);
                 foreach (var file in filePaths)
                 {
@@ -394,7 +394,7 @@ namespace VideoManager.ViewModels
                     workItems.Add((info.FullName, item));
                 }
 
-                // 骞跺彂闄愬埗锛氫竴娆℃渶澶?4 涓缉鐣ュ浘鎻愬彇浠诲姟
+                // 并发限制：一次最多 4 个缩略图提取任务
                 var semaphore = new SemaphoreSlim(4);
                 foreach (var (path, item) in workItems)
                 {
@@ -422,11 +422,11 @@ namespace VideoManager.ViewModels
                         }
                         catch (OperationCanceledException)
                         {
-                            // 蹇界暐鍙栨秷
+                            // 忽略取消
                         }
                         catch
                         {
-                            // 蹇界暐鍗曚釜鏂囦欢鐨勫け璐ワ紝閬垮厤浠诲姟鏁翠綋涓柇
+                            // 忽略单个文件的失败，避免任务整体中断
                         }
                         finally
                         {
@@ -438,7 +438,7 @@ namespace VideoManager.ViewModels
             }
             catch (Exception)
             {
-                // 鍙牴鎹渶瑕佹坊鍔犳棩蹇楁垨閿欒鎻愮ず
+                // 可根据需要添加日志或错误提示
             }
         }
 
@@ -446,7 +446,7 @@ namespace VideoManager.ViewModels
 
         private static ImageSource? ExtractShellThumbnail(string filePath)
         {
-            // 鍏堝皾璇曟嬁缂╃暐鍥撅紱濡傛灉璇ユ枃浠舵病鏈夌缉鐣ュ浘锛屽啀鍥為€€鍒板浘鏍囷紙Explorer 琛屼负绫讳技锛夈€?
+            // 先尝试拿缩略图；如果该文件没有缩略图，再回退到图标（Explorer 行为类似）。
             var thumb = ExtractShellImage(filePath, ThumbnailSize, SIIGBF_THUMBNAILONLY | SIIGBF_BIGGERSIZEOK);
             if (thumb != null)
                 return thumb;
@@ -551,5 +551,3 @@ namespace VideoManager.ViewModels
         private static extern bool DeleteObject(IntPtr hObject);
     }
 }
-
-

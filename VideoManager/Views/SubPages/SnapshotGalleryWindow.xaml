@@ -21,7 +21,13 @@
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border Width="190" Margin="6" BorderBrush="#33000000" BorderThickness="1" CornerRadius="4" Padding="6">
+                    <Border Width="190"
+                            Margin="6"
+                            BorderBrush="#33000000"
+                            BorderThickness="1"
+                            CornerRadius="4"
+                            Padding="6"
+                            MouseLeftButtonDown="SnapshotItem_MouseLeftButtonDown">
                         <StackPanel>
                             <Border Width="176" Height="110" Background="#11000000">
                                 <Image Source="{Binding ImagePath}" Stretch="UniformToFill"/>
