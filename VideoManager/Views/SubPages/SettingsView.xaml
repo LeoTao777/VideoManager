@@ -1,12 +1,138 @@
 ﻿<UserControl x:Class="VideoManager.Views.SubPages.SettingsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:VideoManager.Views.SubPages"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <TextBlock Text="SettingView" FontSize="20"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="16"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="12"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0" LastChildFill="False">
+            <StackPanel>
+                <TextBlock Text="设置"
+                           FontSize="26"
+                           FontWeight="Bold"
+                           Foreground="#1A2A56"/>
+            </StackPanel>
+            <Button DockPanel.Dock="Right"
+                    Content="刷新"
+                    Width="86"
+                    Height="32"
+                    Margin="16,0,0,0"
+                    Click="RefreshButton_Click"/>
+        </DockPanel>
+
+        <Border Grid.Row="2"
+                Padding="16"
+                Background="#F7FAFF"
+                BorderBrush="#D8E4FF"
+                BorderThickness="1"
+                CornerRadius="12">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="默认视频文件夹"
+                           FontSize="15"
+                           FontWeight="SemiBold"
+                           Foreground="#1A2A56"/>
+
+                <Border Grid.Row="2"
+                        Padding="10"
+                        CornerRadius="8"
+                        Background="White"
+                        BorderBrush="#CFDAF6"
+                        BorderThickness="1">
+                    <TextBlock Text="{Binding DefaultFolder}"
+                               TextWrapping="Wrap"
+                               Foreground="#1F2E4D"/>
+                </Border>
+
+                <Grid Grid.Row="4" >
+                    <TextBlock Grid.Row="4"
+                    Text="{Binding DefaultFolderStatus}"
+                    Foreground="#5979FD"
+                    FontSize="12"/>
+                    <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center">
+                        <Button Content="修改" Foreground="#5979FD" FontSize="15" Margin="0,0,30,0"/>
+                        <Button Content="保存" Foreground="#5979FD" FontSize="15"/>
+                    </StackPanel>
+
+                    <!--<Button Content="修改"  Foreground="#5979FD" FontSize="15"  VerticalAlignment="Center" Margin="5,0,5,0"/>
+                    <Button Content="保存"  Foreground="#5979FD" FontSize="15"  VerticalAlignment="Center" />-->
+
+
+                </Grid>
+                
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="4"
+                Padding="16"
+                Background="#F5FBF7"
+                BorderBrush="#D6EFDD"
+                BorderThickness="1"
+                CornerRadius="12">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="默认截图保存目录"
+                           FontSize="15"
+                           FontWeight="SemiBold"
+                           Foreground="#1A2A56"/>
+
+                <Border Grid.Row="2"
+                        Padding="10"
+                        CornerRadius="8"
+                        Background="White"
+                        BorderBrush="#CDE8D6"
+                        BorderThickness="1">
+                    <TextBlock Text="{Binding SnapshotFolder}"
+                               TextWrapping="Wrap"
+                               Foreground="#1F2E4D"/>
+                </Border>
+
+                <TextBlock Grid.Row="4"
+                           Text="{Binding SnapshotFolderStatus}"
+                           Foreground="#2E8B57"
+                           FontSize="12"/>
+
+                <TextBlock Grid.Row="6"
+                           Text="索引文件:"
+                           Foreground="#5F6E89"
+                           FontSize="12"/>
+            </Grid>
+        </Border>
+
+        <TextBlock Grid.Row="5"
+                   Margin="18,8,0,0"
+                   Text="{Binding SnapshotIndexFilePath}"
+                   Foreground="#5F6E89"
+                   FontSize="12"
+                   TextWrapping="Wrap"/>
     </Grid>
 </UserControl>

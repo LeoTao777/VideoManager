@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <Folder Include="Core\" />
+    <Folder Include="doc\" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Prism.Core" Version="9.0.537" />
     <Resource Include="Assets\Fonts\digital_display.ttf" />
